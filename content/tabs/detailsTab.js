@@ -25,22 +25,23 @@ DetailsTab.prototype = Lib.extend(DynamicTab.prototype,
     label: "Details",
 
     bodyTag:
-        DIV({"class": "DetailsBody"}),
+        DIV({"class": "tabContent"}),
 
     // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
     // Content
 
     onUpdateBody: function(tabView, body)
     {
+	var content = this.getTabContent();
         var selection = tabView.selection;
         if (!selection)
         {
-            this.noSelection.replace({}, body);
+            this.noSelection.replace({}, content);
             return;
         }
 
         var tree = new ObjectTree({"Object": selection});
-        tree.append(body, true);
+        tree.append(content, true);
     },
 });
 

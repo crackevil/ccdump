@@ -4,18 +4,18 @@ define([
     "lib/domplate",
     "lib/lib",
     "lib/trace",
-    "lib/tabView",
+    "tabs/dynamicTab",
     "app/objectTableView",
 ],
 
-function(Domplate, Lib, FBTrace, TabView, ObjectTableView) {
+function(Domplate, Lib, FBTrace, dynamicTab, ObjectTableView) {
 with (Domplate) {
 
 // ********************************************************************************************* //
 // Home Tab
 
 function RootsTab() {}
-RootsTab.prototype = Lib.extend(TabView.Tab.prototype,
+RootsTab.prototype = Lib.extend(dynamicTab.prototype,
 {
     // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
     // Tab
@@ -24,7 +24,7 @@ RootsTab.prototype = Lib.extend(TabView.Tab.prototype,
     label: "Roots",
 
     bodyTag:
-        DIV({"class": "RootsBody"}),
+        DIV({"class": "tabContent"}),
 
     // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
     // Content
@@ -37,21 +37,22 @@ RootsTab.prototype = Lib.extend(TabView.Tab.prototype,
 
     invalidate: function()
     {
-        TabView.Tab.prototype.invalidate.apply(this, arguments);
+        dynamicTab.prototype.invalidate.apply(this, arguments);
     },
 
     onUpdateBody: function(tabView, body)
     {
+	var content = this.getTabContent();
         if (tabView.analyzer.isEmpty())
         {
-            this.noAnalyses.replace({}, body);
+            this.noAnalyses.replace({}, content);
             return;
         }
 
         var selection = tabView.selection;
         if (!selection)
         {
-            this.noSelection.replace({}, body);
+            this.noSelection.replace({}, content);
             return;
         }
 
@@ -60,11 +61,11 @@ RootsTab.prototype = Lib.extend(TabView.Tab.prototype,
         if (results.length)
         {
             var table = new ObjectTableView();
-            table.render(body, results);
+            table.render(content, results);
         }
         else
         {
-            this.noRoots.replace({}, body);
+            this.noRoots.replace({}, content);
         }
     },
 });
