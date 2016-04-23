@@ -201,7 +201,7 @@ var GraphSerializer =
         {
             var o = log.graph[address];
             var obj = analyzer.ensureObject(o.address);
-            for (p in o)
+            for (var p in o)
                 obj[p] = o[p];
 
             var edges = obj.edges;
